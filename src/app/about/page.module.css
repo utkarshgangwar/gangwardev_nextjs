@@ -1,0 +1,295 @@
+.aboutRoot {
+  padding: 24px;
+  /* Removed overflow-y: hidden to let components render fully down the page */
+}
+
+/* Desktop Layout Layout Adaptations */
+@media (min-width: 900px) {
+  html,
+  body {
+    height: auto; /* Let content determine document height */
+  }
+
+  /* 
+    Crucial fix: sticky elements need a parent frame container that covers 
+    the full height of the adjacent column.
+  */
+  .leftColumn {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 6.5rem;
+    height: fit-content;
+    z-index: 10;
+  }
+
+  .rightColumn {
+    height: auto; /* Remove explicit vertical scroll bars inside columns */
+    padding-right: 20px;
+  }
+}
+
+/* Profile Card */
+.profileCard {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.cover {
+  height: 140px;
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+}
+
+.avatar {
+  width: 110px !important;
+  height: 110px !important;
+  border: 5px solid #fff;
+  position: absolute;
+  top: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Section Cards */
+.sectionBox {
+  padding: 28px;
+  border-radius: 22px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+@media (min-width: 900px) {
+  .sectionBox:hover {
+    transform: translateY(-6px) rotate(-0.4deg);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Project Card */
+.projectCard {
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+@media (min-width: 900px) {
+  .projectCard:hover {
+    transform: translateY(-8px) rotate(-0.6deg) scale(1.01);
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* List */
+.list {
+  margin-top: 12px;
+  padding-left: 20px;
+  color: #555;
+}
+
+.list li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* Scrollbar */
+@media (min-width: 900px) {
+  .rightColumn::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .rightColumn::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff7a18, #ffb347);
+    border-radius: 10px;
+  }
+
+  .rightColumn::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* Auto floating animation */
+@media (min-width: 900px) {
+  .profileCard {
+    animation: floatDrunk 5s ease-in-out infinite;
+  }
+
+  @keyframes floatDrunk {
+    0% {
+      transform: translateY(0px) rotate(0deg);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    25% {
+      /* Increased from -6px to -12px */
+      transform: translateY(-12px) rotate(0.5deg);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.12);
+    }
+
+    50% {
+      /* Increased from -10px to -24px for a distinct floating effect */
+      transform: translateY(-24px) rotate(-0.6deg);
+      box-shadow: 0 32px 65px rgba(0, 0, 0, 0.16);
+    }
+
+    75% {
+      /* Increased from -6px to -12px */
+      transform: translateY(-12px) rotate(0.4deg);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.12);
+    }
+
+    100% {
+      transform: translateY(0px) rotate(0deg);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+/* Cleaned up Cover Wrapper */
+.cover {
+  width: 100%;
+  height: 256px; /* This matches Tailwind's h-64 precisely */
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  cursor: pointer;
+}
+
+/* Ensure slides consistently occupy the parent boundary */
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+}
+
+/* Optional: If you want to use the active state */
+.active {
+  opacity: 1;
+  z-index: 10;
+}
+
+/* Make cover clickable */
+.cover {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* Modal Styles */
+.modalContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+}
+
+.modalImage {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 16px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+  animation: fadeIn 0.3s ease;
+}
+
+.closeButton {
+  position: absolute !important;
+  top: 20px;
+  right: 20px;
+  background: white !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ... (keep your existing animations and layout CSS) ... */
+
+/* ============================= */
+/* LIGHT MODE (Default)          */
+/* ============================= */
+
+.profileCard {
+  background: #ffffff;
+  color: #000000;
+}
+
+.sectionBox {
+  background: #ffffff;
+  color: #000000;
+}
+
+.projectCard {
+  background: #f5f6f7;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ============================= */
+/* DARK MODE SURFACES            */
+/* ============================= */
+
+/* This targets the .dark class on html/body and flows down */
+:global(.dark) {
+  .profileCard {
+    background: #1e1e1e !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  .sectionBox {
+    background: #202020 !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+
+    h6 {
+      color: #ffffff;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+
+  .projectCard {
+    background: #262626 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    p {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+
+  /* Adjusting specific MUI icons/text for visibility */
+  .leftColumn {
+    svg {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    p,
+    h6 {
+      color: #ffffff;
+    }
+  }
+}

@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* 1. Tell Tailwind v4 to look for manual .dark classes on the html element */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Elegantly thin scrollbar tokens */
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* 2. Overrides variables manually inside the theme cascade layer */
+@layer theme {
+  .dark {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+
+    /* Dark mode scrollbar tokens */
+    --scrollbar-track: #1e293b;
+    --scrollbar-thumb: #475569;
+    --scrollbar-thumb-hover: #64748b;
+  }
+}
+
+/* 3. Media query fallback for users who haven't toggled anything yet */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+
+    --scrollbar-track: #1e293b;
+    --scrollbar-thumb: #475569;
+    --scrollbar-thumb-hover: #64748b;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition:
+    background-color 0.8s ease,
+    color 0.8s ease;
+}
+
+/* Modern Standard Cross-Browser Support (Firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Webkit Browsers (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar {
+  width: 8px; /* Makes it sleek and thin vertically */
+  height: 8px; /* Makes it sleek and thin horizontally */
+}
+
+/* The background pipeline track */
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 10px;
+}
+
+/* The draggable scroll element */
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+  border: 2px solid var(--scrollbar-track); /* Creates an elegant 'floating' padding effect */
+  transition: background-color 0.3s ease;
+}
+
+/* Active Hover effects */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
