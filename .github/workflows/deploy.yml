@@ -1,0 +1,58 @@
+name: gangwardev CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.18.0"
+          cache: "npm"
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Run Unit Tests
+        run: npm run test --if-present
+
+  # Un-comment below if running Playwright/Cypress for E2E testing
+  # - name: Install E2E Test Runner Browsers
+  #   run: npx playwright install --with-deps
+  # - name: Run E2E Tests
+  #   run: npm run test:e2e --if-present
+
+  deploy-to-ec2:
+    needs: test-verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Secure Remote SSH Execution
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Source NVM profile explicitly to make node/npm accessible to the SSH session
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            cd /var/www/gangwardev_nextjs
+
+            # Reset adjustments and grab target code state
+            git reset --hard origin/main
+            git pull origin main
+
+            # Install fresh production builds
+            npm ci
+            npm run build
+
+            # Zero downtime engine reload
+            pm2 reload gangwar-next || pm2 start npm --name "gangwar-next" -- start -- -p 3000
