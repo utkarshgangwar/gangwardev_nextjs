@@ -44,15 +44,16 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-            cd /var/www/gangwardev_nextjs/gangwardev_nextjs
+            # 1. Navigate directly into your inner code folder
+            cd /var/www/gangwardev_nextjs/gangwardev_next
 
-            # Reset adjustments and grab target code state
+            # 2. Reset adjustments and grab target code state
             git reset --hard origin/main
             git pull origin main
 
-            # Install fresh production builds
+            # 3. Install fresh production builds
             npm ci
             npm run build
 
-            # Zero downtime engine reload
-            pm2 reload gangwar-next || pm2 start npm --name "gangwar-next" -- start -- -p 3000
+            # 4. Zero downtime engine reload pointing explicitly to the subfolder
+            pm2 reload gangwar-next || pm2 start npm --name "gangwar-next" --cwd "/var/www/gangwardev_nextjs/gangwardev_next" -- start -- -p 4000
