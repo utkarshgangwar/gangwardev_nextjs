@@ -30,7 +30,7 @@ jobs:
   #   run: npm run test:e2e --if-present
 
   deploy-to-ec2:
-    needs: test-verify
+    needs: test-and-verify
     runs-on: ubuntu-latest
     steps:
       - name: Secure Remote SSH Execution
