@@ -40,19 +40,19 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Source NVM profile explicitly to make node/npm accessible to the SSH session
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-            cd /var/www/gangwardev_nextjs/gangwardev_nextjs
+            # 1. Navigate to your actual repo root directory
+            cd /var/www/gangwardev_nextjs
 
-            # Reset adjustments and grab target code state
+            # 2. Pull code and reset adjustments
             git reset --hard origin/main
             git pull origin main
 
-            # Install fresh production builds
+            # 3. Build the Next.js app
             npm ci
             npm run build
 
-            # Zero downtime engine reload
-            pm2 reload gangwar-next || pm2 start npm --name "gangwar-next" --cwd "/var/www/gangwardev_nextjs/gangwardev_nextjs" -- start -- -p 3000
+            # 4. Boot up PM2 forcing the correct target folder configuration
+            pm2 reload gangwar-next || pm2 start npm --name "gangwar-next" --cwd "/var/www/gangwardev_nextjs" -- start -- -p 3000
