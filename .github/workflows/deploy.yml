@@ -44,7 +44,7 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-            cd /var/www/gangwardev_nextjs
+            cd /var/www/gangwardev_nextjs/gangwardev_nextjs
 
             # Reset adjustments and grab target code state
             git reset --hard origin/main
