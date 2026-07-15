@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Utkarsh Gangwar" }],
   creator: "Utkarsh Gangwar",
-  metadataBase: new URL("https://gangwar.dev"), // Replace with your actual live domain
+  metadataBase: new URL("https://gangwar.dev"),
   openGraph: {
     title: "Utkarsh Gangwar | Portfolio",
     description:
@@ -64,27 +64,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${roboto.variable} h-full antialiased dark`}>
+    /* Removed the hardcoded 'dark' class and added suppressHydrationWarning */
+    <html
+      lang="en"
+      className={`${roboto.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Inline script to prevent theme flashing on load */}
+        {/* Anti-flash script perfectly synchronized with the React toggle and CSS overrides */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 const savedTheme = localStorage.getItem('theme');
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-                if (theme === 'dark') {
+                if (savedTheme === 'dark') {
                   document.documentElement.classList.add('dark');
-                } else {
+                  document.documentElement.classList.remove('light');
+                } else if (savedTheme === 'light') {
+                  document.documentElement.classList.add('light');
                   document.documentElement.classList.remove('dark');
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  document.documentElement.classList.add('dark');
                 }
               })();
             `,
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-white text-black dark:bg-zinc-950 dark:text-white">
+      {/* Removed explicit utility backgrounds (bg-white dark:bg-zinc-950).
+        The body now safely falls back to the layout CSS variables 
+        we configured for uniform backgrounds and smooth 0.4s animations.
+      */}
+      <body className="min-h-screen flex flex-col">
         {/* Navbar sits at the top */}
         <Navbar />
 

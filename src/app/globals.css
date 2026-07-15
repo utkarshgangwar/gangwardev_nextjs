@@ -3,6 +3,9 @@
 /* 1. Tell Tailwind v4 to look for manual .dark classes on the html element */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ==========================================================================
+   THEME VARIABLES (Default / Light Mode Baseline)
+   ========================================================================== */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -20,22 +23,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* 2. Overrides variables manually inside the theme cascade layer */
-@layer theme {
-  .dark {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ==========================================================================
+   DARK MODE VARIABLES (System Fallback & Manual Override)
+   ========================================================================== */
 
-    /* Dark mode scrollbar tokens */
-    --scrollbar-track: #1e293b;
-    --scrollbar-thumb: #475569;
-    --scrollbar-thumb-hover: #64748b;
-  }
-}
-
-/* 3. Media query fallback for users who haven't toggled anything yet */
+/* A. Automatic System Fallback: Only triggers if the user hasn't explicitly picked light mode */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
 
@@ -45,8 +39,7 @@
   }
 }
 
-/* Overrides whenever .dark is explicitly added, even if system is light */
-.dark,
+/* B. Strict Manual Override: When JS explicitly assigns the .dark class to the html tag */
 :root.dark {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -56,13 +49,16 @@
   --scrollbar-thumb-hover: #64748b;
 }
 
+/* ==========================================================================
+   GLOBAL STYLES & CUSTOM SCROLLBARS
+   ========================================================================== */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   transition:
-    background-color 0.8s ease,
-    color 0.8s ease;
+    background-color 0.5s ease,
+    color 0.5s ease;
 }
 
 /* Modern Standard Cross-Browser Support (Firefox) */
@@ -73,25 +69,22 @@ body {
 
 /* Webkit Browsers (Chrome, Safari, Edge, Opera) */
 ::-webkit-scrollbar {
-  width: 8px; /* Makes it sleek and thin vertically */
-  height: 8px; /* Makes it sleek and thin horizontally */
+  width: 8px;
+  height: 8px;
 }
 
-/* The background pipeline track */
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
   border-radius: 10px;
 }
 
-/* The draggable scroll element */
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 10px;
-  border: 2px solid var(--scrollbar-track); /* Creates an elegant 'floating' padding effect */
+  border: 2px solid var(--scrollbar-track);
   transition: background-color 0.3s ease;
 }
 
-/* Active Hover effects */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
