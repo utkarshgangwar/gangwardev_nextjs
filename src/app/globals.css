@@ -35,7 +35,7 @@
 
 /* 3. Media query fallback for users who haven't toggled anything yet */
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  :root {
     --background: #0a0a0a;
     --foreground: #ededed;
 
@@ -43,6 +43,17 @@
     --scrollbar-thumb: #475569;
     --scrollbar-thumb-hover: #64748b;
   }
+}
+
+/* Overrides whenever .dark is explicitly added, even if system is light */
+.dark,
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --scrollbar-track: #1e293b;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
 }
 
 body {
