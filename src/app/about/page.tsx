@@ -263,6 +263,24 @@ export default async function AboutDesk() {
                   Nginx.
                 </p>
               </div>
+              <div className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-semibold text-sm text-slate-900 dark:text-white">
+                    e-Comm
+                  </h4>
+                  <Link
+                    href="https://e-comm-buyer.vercel.app/en"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs font-bold text-blue-600 hover:underline"
+                  >
+                    Visit ↗
+                  </Link>
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  E Commerce Platform with Next.Js
+                </p>
+              </div>
             </div>
           </div>
         </div>
